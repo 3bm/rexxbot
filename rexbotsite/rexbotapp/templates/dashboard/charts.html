@@ -9,13 +9,13 @@
     <title>Charts - SB Admin</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}main_engine/css/bootstrap.css" rel="stylesheet">
 
     <!-- Add custom CSS here -->
-    <link href="css/sb-admin.css" rel="stylesheet">
-    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <link href="{{ STATIC_URL }}dashboard_engine/css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ STATIC_URL }}dashboard_engine/font-awesome/css/font-awesome.min.css">
     <!-- Page Specific CSS -->
-    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}dashboard_engine/css/morris.css">
   </head>
 
   <body>
@@ -32,7 +32,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">SB Admin</a>
+          <a class="navbar-brand" href="index.html">rEXbot 0.1</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -294,21 +294,21 @@
     </div><!-- /#wrapper -->
 
     <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.js"></script>
+    <script src="{{ STATIC_URL }}dashboard_engine/js/jquery-1.10.2.js"></script>
+    <script src="{{ STATIC_URL }}dashboard_engine/js/bootstrap.js"></script>
 
     <!-- Page Specific Plugins -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
-    <script src="js/morris/chart-data-morris.js"></script>
-    <script src="js/tablesorter/jquery.tablesorter.js"></script>
-    <script src="js/tablesorter/tables.js"></script>
+    <script src="{{ STATIC_URL }}dashboard_engine/js/raphael-min.js"></script>
+    <script src="{{ STATIC_URL }}dashboard_engine/js/morris/morris-0.4.3.min.js"></script>
+    <script src="{{ STATIC_URL }}dashboard_engine/js/morris/chart-data-morris.js"></script>
+    <script src="{{ STATIC_URL }}dashboard_engine/js/tablesorter/jquery.tablesorter.js"></script>
+    <script src="{{ STATIC_URL }}dashboard_engine/js/tablesorter/tables.js"></script>
     <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
-	<script src="js/flot/jquery.flot.js"></script>
-	<script src="js/flot/jquery.flot.tooltip.min.js"></script>
-	<script src="js/flot/jquery.flot.resize.js"></script>
-	<script src="js/flot/jquery.flot.pie.js"></script>
-	<script src="js/flot/chart-data-flot.js"></script>
+	<script src="{{ STATIC_URL }}dashboard_engine/js/flot/jquery.flot.js"></script>
+	<script src="{{ STATIC_URL }}dashboard_engine/js/flot/jquery.flot.tooltip.min.js"></script>
+	<script src="{{ STATIC_URL }}dashboard_engine/js/flot/jquery.flot.resize.js"></script>
+	<script src="{{ STATIC_URL }}dashboard_engine/js/flot/jquery.flot.pie.js"></script>
+	<script src="{{ STATIC_URL }}dashboard_engine/js/flot/chart-data-flot.js"></script>
 
   </body>
 </html>

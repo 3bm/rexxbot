@@ -11,3 +11,10 @@ def home(request):
 	context = {}
 
 	return render(request, 'dashboard/index.html', context)
+
+
+def charts(request):
+
+	context = {}
+
+	return render(request, 'dashboard/charts.html', context)
