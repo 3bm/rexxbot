@@ -6,8 +6,12 @@ from rexbotapp import views
 from django.contrib import admin
 admin.autodiscover()
 
+from django.conf import settings
+
 urlpatterns = patterns('',
     # Examples:
+
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
     url(r'^$', 'rexbotapp.views.home', name='home'),
     # url(r'^rexbotsite/', include('rexbotsite.foo.urls')),
 
