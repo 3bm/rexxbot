@@ -1,4 +1,5 @@
-# Copyright (c) 2013 Alan McIntyre
+# Original Copyright (c) 2013 Alan McIntyre
+# Extended Copyright (c) 2014 Radical Graphics Studios
 
 import httplib
 import json
@@ -8,6 +9,7 @@ decimal.getcontext().rounding = decimal.ROUND_DOWN
 exps = [decimal.Decimal("1e-%d" % i) for i in range(16)]
 
 domain = 'bter.com'
+domain_MTGOX = 'data.mtgox.com'
 
 all_pairs = ['btc_cny',
              'ltc_cny',
@@ -175,6 +177,27 @@ def parseJSONResponse(response):
 class BTERConnection:
     def __init__(self, timeout=30):
         self.conn = httplib.HTTPSConnection(domain, timeout=timeout)
+        
+    def close(self):
+        self.conn.close()
+        
+    def makeRequest(self, url, method='POST', extra_headers=None, params=''):
+        headers = {"Content-type": "application/x-www-form-urlencoded"}
+        if extra_headers is not None:
+            headers.update(extra_headers)
+            
+        self.conn.request(method, url, params, headers)
+        response = self.conn.getresponse().read()
+    
+        return response
+                                
+    def makeJSONRequest(self, url, method='POST', extra_headers=None, params=""):
+        response = self.makeRequest(url, method, extra_headers, params)
+        return parseJSONResponse(response)
+
+class MTGOXConnection:
+    def __init__(self, timeout=30):
+        self.conn = httplib.HTTPSConnection(domain_MTGOX, timeout=timeout)
         
     def close(self):
         self.conn.close()

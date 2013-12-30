@@ -46,3 +46,21 @@ def getTicker(pair, connection=None, error_handler=None):
     #     bids = []
     
     return buy
+
+def getTickerfastUSD(error_handler=None, connection=None):
+	
+	if connection is None:
+		connection = common.MTGOXConnection()
+
+
+	depth = common.validateResponse(connection.makeJSONRequest('/api/1/BTCUSD/ticker_fast', method='GET'),
+                                    error_handler=error_handler)
+
+	if error_handler is not None:
+		print error_handler
+
+	BTCUSD = depth.get(u'return')
+
+	BTCUSD = BTCUSD.get(u'last')
+
+	return BTCUSD
