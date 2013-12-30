@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
     url(r'^$', 'rexbotapp.views.home', name='home'),
     url(r'^charts/', 'rexbotapp.views.charts', name='charts'),
+    url(r'^piechart/', 'rexbotapp.views.piechart', name='piechart'),
     # url(r'^rexbotsite/', include('rexbotsite.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
