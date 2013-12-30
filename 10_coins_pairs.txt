@@ -1,0 +1,10 @@
+Litecoin 	- ltc_btc
+Peercoin 	- ppc_btc
+Namecoin 	- nmc_btc
+Quark		- qrk_btc
+Protoshares	- pts_btc
+Megacoin	- mec_btc
+Worldcoin	- wdc_btc
+Primecoin	- xpm_btc
+Feathercoin	- ftc_btc
+Novacoin	- nvc_btc
