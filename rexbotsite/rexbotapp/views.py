@@ -39,8 +39,7 @@ def home(request):
 	# ask = asks[0].replace("(Decimal('", "")
 
 	USD_ticker = radical_ex_lib.getTickerfastUSD()
-	# print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-	# print ask 
+	EUR_ticker = radical_ex_lib.getTickerfastEUR()
 
 	context = {'asks': asks,
 			   'bids': bids,
@@ -53,6 +52,7 @@ def home(request):
 			   'pair3' : pair_3,
 			   'pair4' : pair_4,
 			   'usdticker' : USD_ticker,
+			   'eurticker' : EUR_ticker,
 				}
 
 	return render(request, 'dashboard/index.html', context)

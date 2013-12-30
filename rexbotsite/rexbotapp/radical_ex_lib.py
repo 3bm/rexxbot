@@ -64,3 +64,22 @@ def getTickerfastUSD(error_handler=None, connection=None):
 	BTCUSD = BTCUSD.get(u'last')
 
 	return BTCUSD
+
+
+def getTickerfastEUR(error_handler=None, connection=None):
+
+	if connection is None:
+		connection = common.MTGOXConnection()
+
+
+	depth = common.validateResponse(connection.makeJSONRequest('/api/1/BTCEUR/ticker_fast', method='GET'),
+                                    error_handler=error_handler)
+
+	if error_handler is not None:
+		print error_handler
+
+	BTCEUR = depth.get(u'return')
+
+	BTCEUR = BTCEUR.get(u'last')
+
+	return BTCEUR
