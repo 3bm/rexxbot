@@ -79,16 +79,7 @@
                     <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
                   </a>
                 </li>
-                <li class="divider"></li>
-                <li class="message-preview">
-                  <a href="#">
-                    <span class="avatar"><img src="http://placehold.it/50x50"></span>
-                    <span class="name">John Smith:</span>
-                    <span class="message">Hey there, I wanted to ask you something...</span>
-                    <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
-                  </a>
-                </li>
-                <li class="divider"></li>
+                
                 <li><a href="#">View Inbox <span class="badge">7</span></a></li>
               </ul>
             </li>
@@ -122,7 +113,6 @@
       <div id="page-wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <div>MIERDA CON PAPAS</div>
            
             <h1>Dashboard <small>Statistics Overview</small></h1>
             <ol class="breadcrumb">
@@ -141,11 +131,11 @@
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-xs-6">
-                    <i class="fa fa-comments fa-5x"></i>
+                    <i class="fa fa-btc fa-5x"></i>
                   </div>
                   <div class="col-xs-6 text-right">
-                    <p class="announcement-heading">456</p>
-                    <p class="announcement-text">New Mentions!</p>
+                    <p class="announcement-heading">{{ticker}}</p>
+                    <p class="announcement-text">{{ pair }}</p>
                   </div>
                 </div>
               </div>
@@ -153,7 +143,7 @@
                 <div class="panel-footer announcement-bottom">
                   <div class="row">
                     <div class="col-xs-6">
-                      View Mentions
+                      Litecoin
                     </div>
                     <div class="col-xs-6 text-right">
                       <i class="fa fa-arrow-circle-right"></i>
@@ -168,11 +158,11 @@
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-xs-6">
-                    <i class="fa fa-check fa-5x"></i>
+                    <i class="fa fa-btc fa-5x"></i>
                   </div>
                   <div class="col-xs-6 text-right">
-                    <p class="announcement-heading">12</p>
-                    <p class="announcement-text">To-Do Items</p>
+                    <p class="announcement-heading">{{ticker2}}</p>
+                    <p class="announcement-text">{{ pair2 }}</p>
                   </div>
                 </div>
               </div>
@@ -180,7 +170,7 @@
                 <div class="panel-footer announcement-bottom">
                   <div class="row">
                     <div class="col-xs-6">
-                      Complete Tasks
+                      Peercoin
                     </div>
                     <div class="col-xs-6 text-right">
                       <i class="fa fa-arrow-circle-right"></i>
@@ -195,11 +185,11 @@
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-xs-6">
-                    <i class="fa fa-tasks fa-5x"></i>
+                    <i class="fa fa-btc fa-5x"></i>
                   </div>
                   <div class="col-xs-6 text-right">
-                    <p class="announcement-heading">18</p>
-                    <p class="announcement-text">Crawl Errors</p>
+                    <p class="announcement-heading">{{ticker3}}</p>
+                    <p class="announcement-text">{{ pair3 }}</p>
                   </div>
                 </div>
               </div>
@@ -207,7 +197,7 @@
                 <div class="panel-footer announcement-bottom">
                   <div class="row">
                     <div class="col-xs-6">
-                      Fix Issues
+                      Namecoin
                     </div>
                     <div class="col-xs-6 text-right">
                       <i class="fa fa-arrow-circle-right"></i>
@@ -222,11 +212,11 @@
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-xs-6">
-                    <i class="fa fa-comments fa-5x"></i>
+                    <i class="fa fa-btc fa-5x"></i>
                   </div>
                   <div class="col-xs-6 text-right">
-                    <p class="announcement-heading">56</p>
-                    <p class="announcement-text">New Orders!</p>
+                    <p class="announcement-heading">{{ticker4}}</p>
+                    <p class="announcement-text">{{ pair4 }}</p>
                   </div>
                 </div>
               </div>
@@ -234,7 +224,7 @@
                 <div class="panel-footer announcement-bottom">
                   <div class="row">
                     <div class="col-xs-6">
-                      Complete Orders
+                      Quarkcoin
                     </div>
                     <div class="col-xs-6 text-right">
                       <i class="fa fa-arrow-circle-right"></i>
@@ -285,11 +275,13 @@
 
                     <a href="#" class="list-group-item">
                       <div>Asks</div>
-                      <div style="color:#000">Mierda - {{ ask }}</div></br>
-                      <i class="fa fa-calendar"></i> Ask
+                      <div style="color:#000"><i class="fa fa-question fa-2x" title="Ask Price"></i>Ask Price {{ ask.0 }}<i class="fa fa-btc fa-2x " title="Ask Volume"></i>Ask Volume {{ ask.1 }}</div></br>
                     </a>
 
                   {% endfor %}     
+
+
+
                 </div>
                 <div class="text-right">
                   <a href="#">View All Activity <i class="fa fa-arrow-circle-right"></i></a>
