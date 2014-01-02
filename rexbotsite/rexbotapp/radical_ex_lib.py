@@ -47,6 +47,27 @@ def getTicker(pair, connection=None, error_handler=None):
     
     return buy
 
+
+def getHistory(pair, connection=None, error_handler=None):
+    """
+    Retrieve the last 80 trade history for the given pair (oon BTER)
+    """
+
+    common.validatePair(pair)
+
+    if connection is None:
+        connection = common.BTERConnection()
+
+    depth = common.validateResponse(connection.makeJSONRequest('/api/1/trade/%s' % pair, method='GET'),
+                                    error_handler=error_handler)
+
+    if error_handler is not None:
+        print "ERROR: " + error_handler
+
+    
+
+
+
 def getTickerfastUSD(error_handler=None, connection=None):
 	
 	if connection is None:
@@ -57,7 +78,7 @@ def getTickerfastUSD(error_handler=None, connection=None):
                                     error_handler=error_handler)
 
 	if error_handler is not None:
-		print error_handler
+		print "ERROR: " + error_handler
 
 	BTCUSD = depth.get(u'return')
 

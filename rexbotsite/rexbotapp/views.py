@@ -14,6 +14,8 @@ from keyhandler import KeyHandler
 from common import all_currencies, all_pairs, max_digits, formatCurrency, fees, formatCurrencyDigits, \
     truncateAmount, truncateAmountDigits, BTERConnection
 
+from rexbotapp.models import MainTickerValue
+
 import random
 import time
 import datetime
@@ -27,11 +29,18 @@ def home(request):
 
 	asks, bids = getDepth(pair)
 
-	print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-	print len(asks), len(bids)
+	#print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+	#print len(asks), len(bids)
 
-	tickerman = radical_ex_lib.getTicker(pair)
+	tickerman = radical_ex_lib.getTicker(pair) #tuickerman is the one for LTC-BTC
 	
+
+	##### We save the value for the future
+
+	papor = MainTickerValue.objects.create(currency='LTC',time=datetime.datetime.utcnow(),value=tickerman)
+	papor.save()
+
+
 	pair_2 = "ppc_btc"
 	ticker_2 = radical_ex_lib.getTicker(pair_2) 
 
@@ -46,14 +55,40 @@ def home(request):
 	USD_ticker = radical_ex_lib.getTickerfastUSD()
 	EUR_ticker = radical_ex_lib.getTickerfastEUR()
 
+
+
+	### Pintando la grafica (que no rula bien de momento)
 	nb_element = 25
 	start_time = int(time.mktime(datetime.datetime(2014, 1, 1).timetuple()) * 1000)
+	
 	xdata = range(nb_element)
+	
 	xdata = map(lambda x: start_time + x * 1000000000, xdata)
+	
 	ydata = [i + random.randint(1, 2) for i in range(nb_element)]
-	ydata2 = map(lambda x: x * 2, simplejson.dumps(asks[1]))
-	#ydata2 = simplejson.dumps(asks)
-	ydata3 = map(lambda x: x * 2, simplejson.dumps(bids[1]))
+
+
+	datos = MainTickerValue.objects.all();
+
+	#time_list = []
+	value_list = []
+
+	for dat in datos:
+	#	time_list.append(dat.time)
+		value_list.append(dat.value * 100)
+
+	#time_list = list(time_list)
+	#time_list_json = simplejson.dumps(time_list)
+	
+	print value_list
+
+	value_data = simplejson.dumps(value_list)
+
+	print value_data
+	ydata2 = map(lambda x: x * 2, ydata)
+
+	#ydata2 = map(lambda x: x * 1, value_data)
+	ydata3 = map(lambda x: x * 2, ydata)
 	ydata4 = map(lambda x: x * 2, ydata)
 
 	tooltip_date = "%d %b %Y %H:%M:%S %p"
@@ -67,8 +102,8 @@ def home(request):
 	'name3': 'series 3', 'y3': ydata3, 'extra3': extra_serie,
 	'name4': 'series 4', 'y4': ydata4, 'extra4': extra_serie
 	}
-	charttype = "lineWithFocusChart"
-	chartcontainer = 'linewithfocuschart_container'  # container name
+	charttype = "lineChart"
+	chartcontainer = 'lineChart_container'  # container name
 
 
 	context = {'asks': asks,

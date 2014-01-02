@@ -40,6 +40,16 @@ class Currency(models.Model):
 	paid = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
 	rate = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
 	value = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+
 	profit = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+
 	fee = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+
+
+
+class MainTickerValue(models.Model):
+
+	currency = models.CharField(max_length=50)
+	time = models.DateTimeField()
+	value = models.DecimalField(max_digits=25, decimal_places=5, default=0.00000) #Exchange in BTC
 
