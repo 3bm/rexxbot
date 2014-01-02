@@ -71,10 +71,6 @@ STATIC_ROOT = os.path.abspath(PROJECT_ROOT + "/static/")
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
-# Needed for Bower...
-# BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
-
-
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -87,7 +83,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    # 'djangobower.finders.BowerFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -136,15 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'rexbotapp',
     'django_nvd3',
-    # 'djangobower',
 )
-
-# Needed for Bower
-# BOWER_INSTALLED_APPS = (
-#     'jquery#1.9',
-#     'underscore',
-#  )
-
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
