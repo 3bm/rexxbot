@@ -8,11 +8,11 @@ class Percentages(models.Model):
 
 # max_percentage: The positive percentage to buy (3.00%)
 # min_percentage: The negative percentage to sell (-3.00%)
-# stop_loss_percentage: A percentage set to avoid losses
+# stop_loss_percentage: A percentage set to avoid losses (experimental variable)
 
-	max_percentage = models.DecimalField(max_digits=None, decimal_places=2)
-	min_percentage = models.DecimalField(max_digits=None, decimal_places=2)
-	stop_loss_percentage = models.DecimalField(max_digits=None, decimal_places=2)
+	max_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+	min_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+	stop_loss_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
 
 
 class Currency(models.Model):
@@ -29,15 +29,17 @@ class Currency(models.Model):
 # fee: The exchange trade fee (bter.com)
 
 	name = models.CharField(max_length=50)
-	# image = models.ImageField(upload_to="images/currencies, default_images/default_currency.png")
- #    image_thumbnail = ImageSpecField(source='image',
- #                                      processors=[ResizeToFill(50, 50)],
- #                                      format='JPEG',
- #                                      options={'quality': 100})
-    symbol = models.CharField(max_length=4)
-    amount = models.DecimalField(max_digits=None, decimal_places=8)
-    paid = models.DecimalField(max_digits=None, decimal_places=2)
-    rate = models.DecimalField(max_digits=None, decimal_places=2)
-    value = models.DecimalField(max_digits=None, decimal_places=2)
-    profit = models.DecimalField(max_digits=None, decimal_places=2)
-    fee = models.DecimalField(max_digits=None, decimal_places=2)
+	# image = models.ImageField(upload_to="images/currencies,default_images/default_currency.png")
+    # image_thumbnail = ImageSpecField(source='image',
+ 	#                                   processors=[ResizeToFill(50, 50)],
+ 	#                                   format='JPEG',
+ 	#                                   options={'quality': 100})
+
+	symbol = models.CharField(max_length=4)
+	amount = models.DecimalField(max_digits=20, decimal_places=8, default=0.00000000)
+	paid = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+	rate = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+	value = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+	profit = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+	fee = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+

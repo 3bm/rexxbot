@@ -2,6 +2,7 @@
 # ========================
 # Rexbot Logic
 
+from rexbotapp.models import Percetages, Currency
 
 def getPercentage (last_value, current_value):
 
@@ -26,7 +27,7 @@ def getMaxPercentage():
  	"""
  	It reads from the database the current Max Percentage (+3% by default)
  	"""
- 	max_percentage = database_variable_name.max_percentage
+ 	max_percentage = Percentages.max_percentage
 
  	return max_percentage
 
@@ -34,7 +35,7 @@ def getMinPercentage():
  	"""
  	It reads from the database the current Min Percentage (-3% by default)
  	"""
- 	min_percentage = database_variable_name.min_percentage
+ 	min_percentage = Percentages.min_percentage
 
  	return min_percentage
 
