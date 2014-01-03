@@ -21,6 +21,8 @@ import time
 import datetime
 
 import radical_ex_lib
+import logic
+from rexbotapp.models import Percentages, Currency
 
 def home(request):
 
@@ -210,3 +212,69 @@ def linechart(request):
     }
 
     return render_to_response('dashboard/linechart.html', data)
+
+def rules_simulation(request):
+
+	"""
+	Function to apply the rules over an existing crytocurrency values database
+
+	It needs a starting point (date and paid price)
+	Then it has to go over the dates and read the value applying the rules
+	"""
+
+	rateArray = Currency.objects.all().order_by('id')
+
+	reference_price = 579.00
+	print "===============" + "\n"
+	print "Starting Price: " + str(reference_price)
+
+	bought = True
+	sold = False
+
+	max_value = reference_price
+	min_value = reference_price
+
+	for price in rateArray:
+
+		print "Price: " + str(price.rate)
+		percentage = logic.getPercentage(reference_price, price.rate)
+		print "Percentage: " + str(percentage)
+
+		negative_percentage = logic.getPercentage(max_value, price.rate)
+		positive_percentage = logic.getPercentage(min_value, price.rate)
+		# buy, sell = logic.checkBuyOrSellPercent (reference_price, price.rate)
+		# print "Buy: " + str(buy)
+		# print "Sell: " + str(sell) + "\n"
+		# print "Bought value: " + str(bought) + "<<<<<<"
+
+
+		if positive_percentage >= logic.getMaxPercentage():
+			buy = True
+			comprar = logic.checkToBuy(bought, buy)
+			if comprar:
+				print "Comprar: " + str(comprar) + "---> " + str(reference_price)
+				reference_price = price.rate
+
+		if negative_percentage <= logic.getMinPercentage():
+			sell = True
+			vender = logic.checkToSell(sold, sell)
+			if vender:
+				print "Sold: " + str(vender) + "--->" + str(price.rate) + "\n"
+				sold = True
+				reference_price = price.rate
+
+		max_value = logic.checkMaxValue(max_value, price.rate)
+		print "Max Value: " + str(max_value)
+
+		min_value = logic.checkMinValue(min_value, price.rate)
+		print "Min Value: " + str(min_value) + "\n"
+
+		print "reference_price: " + str(reference_price) + "\n"
+
+		if sold:
+			reference_price = min_value
+
+		time.sleep(1)
+
+
+

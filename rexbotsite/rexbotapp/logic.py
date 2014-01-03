@@ -2,8 +2,8 @@
 # ========================
 # Rexbot Logic
 
-from rexbotapp.models import Percetages, Currency
-
+from rexbotapp.models import Percentages, Currency
+import decimal
 def getPercentage (last_value, current_value):
 
 	"""
@@ -12,9 +12,9 @@ def getPercentage (last_value, current_value):
 	If the percentage is smaller than 100 it substract the diference and it returns a negative value
 	"""
 
-	percentage = (current_value*100)/last_value
+	percentage = (decimal.Decimal(current_value) * decimal.Decimal(100))/ decimal.Decimal(last_value)
 
-	percentage = percentage - 100
+	percentage = percentage - decimal.Decimal(100)
 
 	# if percentage > 100:
 	# 	percentage = percentage - 100
@@ -27,7 +27,10 @@ def getMaxPercentage():
  	"""
  	It reads from the database the current Max Percentage (+3% by default)
  	"""
- 	max_percentage = Percentages.max_percentage
+
+ 	percentages = Percentages.objects.get(id=1)
+
+ 	max_percentage = percentages.max_percentage
 
  	return max_percentage
 
@@ -35,7 +38,9 @@ def getMinPercentage():
  	"""
  	It reads from the database the current Min Percentage (-3% by default)
  	"""
- 	min_percentage = Percentages.min_percentage
+ 	percentages = Percentages.objects.get(id=1)
+
+ 	min_percentage = percentages.min_percentage
 
  	return min_percentage
 
@@ -53,41 +58,44 @@ def checkBuyOrSellPercent (starting_price, current_price):
 	max_percentage = getMaxPercentage()
 	min_percentage = getMinPercentage()
 
-	buy, sell = false
+	buy = False
+	sell = False
 	
 	if percentage > max_percentage:
-		buy = true
-	else if percentage < min_percentage:
-		sell = true
+		buy = True
+	elif percentage < min_percentage:
+		sell = True
 
 	return buy, sell
 
 
-def checkToBuy (purchased, buy):
+def checkToBuy (bought, buy):
 
 	"""
 	In order to buy we have to check if we bought/purchases already, if not, we buy
 	purchased - Boolean - It means that we bought if true
 	but - Boolean - It means that we can buy if true
 	"""
-	if (not purchased) and (buy):
+	
+	comprar = False
 
-		# buy logic code here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	if (bought==False) and (buy==True):
+		comprar = True
 
+	return comprar
 
 def checkToSell (sold, sell):
-
 	"""
 	In order to sell we have to check if we sold already, if not, we sell
 	sold - Boolean - It means that we sold if true
 	sell - Boolean - It means that we can sell if true
 	"""
+	vender = False
+	
 	if (not sold) and sell:
+		vender = True
 
-		# Sell logic code here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
-
+	return vender
 
 def checkMaxValue (maxvalue, current_price):
 
@@ -110,7 +118,7 @@ def checkMinValue (minvalue, current_price):
 	if it is bigger it will update minvalue to the current_price
 	"""
 
-	if minvalue > current_price
+	if minvalue > current_price:
 
 		minvalue = current_price
 

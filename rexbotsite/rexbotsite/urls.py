@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^charts/', 'rexbotapp.views.charts', name='charts'),
     url(r'^piechart/', 'rexbotapp.views.piechart', name='piechart'),
     url(r'^linechart/', 'rexbotapp.views.linechart', name='linechart'),
+    url(r'^simulation/', 'rexbotapp.views.rules_simulation', name='simulation'),
     # url(r'^rexbotsite/', include('rexbotsite.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
