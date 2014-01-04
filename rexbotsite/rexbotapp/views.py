@@ -37,8 +37,12 @@ def home(request):
 
 	##### We save the value for the future
 
-	papor = MainTickerValue.objects.create(currency='LTC',time=datetime.datetime.utcnow(),value=tickerman)
-	papor.save()
+	#papor = MainTickerValue.objects.create(currency='LTC',time=datetime.datetime.utcnow(),value=tickerman)
+	#papor.save()
+
+	#############
+
+	radical_ex_lib.saveCurrencies()
 
 
 	pair_2 = "ppc_btc"
@@ -58,8 +62,8 @@ def home(request):
 
 
 	### Pintando la grafica (que no rula bien de momento)
-	nb_element = 25
-	start_time = int(time.mktime(datetime.datetime(2014, 1, 1).timetuple()) * 1000)
+	nb_element = 100
+	start_time = int(time.mktime(datetime.datetime(2014, 1, 2).timetuple()) * 1000)
 	
 	xdata = range(nb_element)
 	
@@ -75,21 +79,30 @@ def home(request):
 
 	for dat in datos:
 	#	time_list.append(dat.time)
-		value_list.append(dat.value * 100)
+		value_list.append(int(dat.value*100))
 
 	#time_list = list(time_list)
 	#time_list_json = simplejson.dumps(time_list)
 	
 	print value_list
 
-	value_data = simplejson.dumps(value_list)
+	# value_data = simplejson.dumps(value_list)
 
-	print value_data
+	# print value_data
+	#ydata2 = map(lambda x: x * 2, value_list)
+	# for dat in value_data:
+	# 	dat = int(dat) * 1000
+
+	# print "SEGUNDA VEZZZ"
+	# print value_data
+
 	ydata2 = map(lambda x: x * 2, ydata)
-
-	#ydata2 = map(lambda x: x * 1, value_data)
 	ydata3 = map(lambda x: x * 2, ydata)
 	ydata4 = map(lambda x: x * 2, ydata)
+
+	print ydata2
+	print "POLLA GIORDAAAAAAAAAAAAAAAAAAA"
+	print ydata3
 
 	tooltip_date = "%d %b %Y %H:%M:%S %p"
 	extra_serie = {"tooltip": {"y_start": "There are ", "y_end": " calls"},

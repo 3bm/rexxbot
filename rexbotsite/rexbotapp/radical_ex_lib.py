@@ -4,6 +4,11 @@ import decimal
 
 import common
 
+import datetime
+
+import sys
+
+from rexbotapp.models import MainTickerValue
 
 
 def getTicker(pair, connection=None, error_handler=None):
@@ -104,3 +109,24 @@ def getTickerfastEUR(error_handler=None, connection=None):
 	BTCEUR = BTCEUR.get(u'last')
 
 	return BTCEUR
+
+def saveCurrencies():
+
+    CURR = [
+        ['LTC', 'ltc_btc'],
+        ['PPC', 'ppc_btc'],
+        ['NMC', 'nmc_btc'],
+        ['QRK', 'qrk_btc'],
+        ]
+
+    for pair in CURR:
+
+
+        #print pair[1]
+        #sys.exit()
+
+        ticker = getTicker(pair[1])
+
+        papor = MainTickerValue.objects.create(currency=pair[0],time=datetime.datetime.utcnow(),value=ticker)
+        papor.save()
+
