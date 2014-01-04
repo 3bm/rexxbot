@@ -227,7 +227,7 @@ def rules_simulation(request):
 
 	reference_price = bought_price
 	html = "=============== <br>"
-	html = html + "Starting Price: " + str(reference_price) + "<br>"
+	html = html + "Precio de salida (comprado a): " + str(reference_price) + "<br>"
 
 	bought = True
 	sold = False
@@ -241,10 +241,12 @@ def rules_simulation(request):
 		# ===========================================================================
 		if bought:
 			html = html + "Miramos si hay que vender <br>"
+			html = html + "Precio de referencia: " + str(reference_price) + "<br>"
 			# Obtenemos el porcentaje del precio actual con el de compra (referencia)
-			html = html + "Price: " + str(price.value) + "<br>"
+			html = html + "Valor maximo: " + str(max_value) + "<br>"
+			html = html + "Precio actual: " + str(price.value) + "<br>"
 			percentage = logic.getPercentage(reference_price, price.value)
-			html = html + "Percentage: " + str(percentage) + "<br>"
+			html = html + "Porcentaje (valor maximo, precio actual): " + str(percentage) + "<br><br>"
 
 			# Si el porcentaje actual es mas bajo (o igual) que la regla del 3% tiene que vender
 			if percentage <= logic.getMinPercentage():
@@ -254,29 +256,29 @@ def rules_simulation(request):
 				vender = logic.checkToSell(sold, sell)
 				# si vender es true hay que colocar la orden de venta
 				if vender:
-					html = html + "<span style:'color=#00FF00'>Sold: " + str(vender) + "--->" + str(price.value) + "</span><br>"
+					html = html + "<span style='color:#FF0000'>Vendido a: " + str(vender) + "--->" + str(price.value) + "</span><br>"
 					# indicamos que hemos vendido
 					sold = True
 					bought = False
 					# actualizamos el precio de referencia al de venta
 					reference_price = price.value
-					html = html + "Reference Price: " + str(reference_price) + "<br><br>"
+					
 					min_value = price.value
 			# si el porcentage es positivo actualizamos el precio de referencia (ya que es mayor al actual)
 			else:
 
 				# Comprobamos el valor maximo, si el precio actual es mas grande se actualiza
 				max_value = logic.checkMaxValue(max_value, price.value)
-				html = html + "Max Value: " + str(max_value) + "<br><br>"
+				
 				reference_price = max_value
 
 		else:
 			html = html + "Miramos si hay que comprar <br>"
-			html = html + "Reference Price: " + str(reference_price) + "<br>"
+			html = html + "Precio de referencia: " + str(reference_price) + "<br>"
 			# Obtenemos el porcentaje del precio actual con el de compra (referencia)
-			html = html + "Price: " + str(price.value) + "<br>"
+			html = html + "Precio actual: " + str(price.value) + "<br>"
 			percentage = logic.getPercentage(reference_price, price.value)
-			html = html + "Percentage: " + str(percentage) + "<br>"
+			html = html + "Porcentaje (precio mas bajo, precio actual): " + str(percentage) + "<br>"
 
 			# Si el porcentaje actual es mas alto (o igual) que la regla del 3% tiene que comprar
 			if percentage >= logic.getMaxPercentage():
@@ -286,7 +288,7 @@ def rules_simulation(request):
 				comprar = logic.checkToBuy(bought, buy)
 				# si comprar es true hay que colocar la orden de compra
 				if comprar:
-					html = html + "Bought: " + str(comprar) + "--->" + str(price.value) + "<br><br>"
+					html = html + "<span style='color:#00FF00'>Comprado a: " + str(comprar) + "--->" + str(price.value) + "<br><br>"
 					# indicamos que hemos comprado
 					bought = True
 					sold = False
@@ -297,7 +299,7 @@ def rules_simulation(request):
 
 				# Comprobamos el valor minimo, si el precio actual es mas bajo se actualiza
 				min_value = logic.checkMinValue(min_value, price.value)
-				html = html + "Min Value: " + str(min_value) + "<br><br>"
+				html = html + "Valor minimo: " + str(min_value) + "<br><br>"
 				reference_price = min_value
 				max_value = price.value
 
