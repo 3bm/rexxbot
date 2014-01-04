@@ -224,7 +224,9 @@ def rules_simulation(request):
 
 	rateArray = Currency.objects.all().order_by('id')
 
-	reference_price = 579.00
+	bought_price = 579.00
+
+	reference_price = bought_price
 	print "===============" + "\n"
 	print "Starting Price: " + str(reference_price)
 
@@ -236,45 +238,115 @@ def rules_simulation(request):
 
 	for price in rateArray:
 
-		print "Price: " + str(price.rate)
-		percentage = logic.getPercentage(reference_price, price.rate)
-		print "Percentage: " + str(percentage)
+		# SI HA COMPRADO COMPRUEBA QUE TIENE QUE VENDER SI EL VALOR MAXIMO BAJA UN 3%
+		# ===========================================================================
+		if bought:
+			print "Entra en venta"
+			# Obtenemos el porcentaje del precio actual con el de compra (referencia)
+			print "Price: " + str(price.rate)
+			percentage = logic.getPercentage(reference_price, price.rate)
+			print "Percentage: " + str(percentage)
 
-		negative_percentage = logic.getPercentage(max_value, price.rate)
-		positive_percentage = logic.getPercentage(min_value, price.rate)
-		# buy, sell = logic.checkBuyOrSellPercent (reference_price, price.rate)
-		# print "Buy: " + str(buy)
-		# print "Sell: " + str(sell) + "\n"
-		# print "Bought value: " + str(bought) + "<<<<<<"
+			# Si el porcentaje actual es mas bajo (o igual) que la regla del 3% tiene que vender
+			if percentage <= logic.getMinPercentage():
+				# indicamos que hay que vender
+				sell = True
+				# comprobamos que ya hemos vendido antes o no
+				vender = logic.checkToSell(sold, sell)
+				# si vender es true hay que colocar la orden de venta
+				if vender:
+					print "Sold: " + str(vender) + "--->" + str(price.rate) + "\n"
+					# indicamos que hemos vendido
+					sold = True
+					bought = False
+					# actualizamos el precio de referencia al de venta
+					reference_price = price.rate
+					print "Reference Price: " + str(reference_price) + "\n"
+					min_value = price.rate
+			# si el porcentage es positivo actualizamos el precio de referencia (ya que es mayor al actual)
+			else:
+
+				# Comprobamos el valor maximo, si el precio actual es mas grande se actualiza
+				max_value = logic.checkMaxValue(max_value, price.rate)
+				print "Max Value: " + str(max_value) + "\n"
+				reference_price = max_value
+
+		else:
+			print "Entra en compra"
+			print "Reference Price: " + str(reference_price) + "\n"
+			# Obtenemos el porcentaje del precio actual con el de compra (referencia)
+			print "Price: " + str(price.rate)
+			percentage = logic.getPercentage(reference_price, price.rate)
+			print "Percentage: " + str(percentage)
+
+			# Si el porcentaje actual es mas alto (o igual) que la regla del 3% tiene que comprar
+			if percentage >= logic.getMaxPercentage():
+				# indicamos que hay que comprar
+				buy = True
+				# comprobamos que ya hemos comprado antes o no
+				comprar = logic.checkToBuy(bought, buy)
+				# si comprar es true hay que colocar la orden de compra
+				if comprar:
+					print "Bought: " + str(comprar) + "--->" + str(price.rate) + "\n"
+					# indicamos que hemos comprado
+					bought = True
+					sold = False
+					# actualizamos el precio de referencia al de venta
+					reference_price = price.rate
+			# si el porcentage es negativo actualizamos el precio de referencia (ya que es menor al actual)
+			else:
+
+				# Comprobamos el valor minimo, si el precio actual es mas bajo se actualiza
+				min_value = logic.checkMinValue(min_value, price.rate)
+				print "Min Value: " + str(min_value) + "\n"
+				reference_price = min_value
+				max_value = price.rate
 
 
-		if positive_percentage >= logic.getMaxPercentage():
-			buy = True
-			comprar = logic.checkToBuy(bought, buy)
-			if comprar:
-				print "Comprar: " + str(comprar) + "---> " + str(reference_price)
-				reference_price = price.rate
+	time.sleep(1)
 
-		if negative_percentage <= logic.getMinPercentage():
-			sell = True
-			vender = logic.checkToSell(sold, sell)
-			if vender:
-				print "Sold: " + str(vender) + "--->" + str(price.rate) + "\n"
-				sold = True
-				reference_price = price.rate
 
-		max_value = logic.checkMaxValue(max_value, price.rate)
-		print "Max Value: " + str(max_value)
 
-		min_value = logic.checkMinValue(min_value, price.rate)
-		print "Min Value: " + str(min_value) + "\n"
 
-		print "reference_price: " + str(reference_price) + "\n"
 
-		if sold:
-			reference_price = min_value
+			# negative_percentage = logic.getPercentage(max_value, price.rate)
+			# positive_percentage = logic.getPercentage(min_value, price.rate)
+			# buy, sell = logic.checkBuyOrSellPercent (reference_price, price.rate)
+			# print "Buy: " + str(buy)
+			# print "Sell: " + str(sell) + "\n"
+			# print "Bought value: " + str(bought) + "<<<<<<"
 
-		time.sleep(1)
+
+			# if positive_percentage >= logic.getMaxPercentage():
+			# 	buy = True
+			# 	comprar = logic.checkToBuy(bought, buy)
+			# 	if comprar:
+			# 		print "Comprar: " + str(comprar) + "---> " + str(reference_price)
+			# 		reference_price = price.rate
+
+		# 	if negative_percentage <= logic.getMinPercentage():
+		# 		sell = True
+		# 		vender = logic.checkToSell(sold, sell)
+		# 		if vender:
+		# 			print "Sold: " + str(vender) + "--->" + str(price.rate) + "\n"
+		# 			sold = True
+		# 			reference_price = price.rate
+
+
+
+	
+		# # Comprobamos el valor minimo, si el precio actual es mas bajo se actualiza
+		# min_value = logic.checkMinValue(min_value, price.rate)
+		# print "Min Value: " + str(min_value) + "\n"
+
+
+
+		# print "reference_price: " + str(reference_price) + "\n"
+
+		# if sold:
+		# 	reference_price = min_value
+
+	
 
 
 

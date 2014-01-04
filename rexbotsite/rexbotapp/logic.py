@@ -4,7 +4,7 @@
 
 from rexbotapp.models import Percentages, Currency
 import decimal
-def getPercentage (last_value, current_value):
+def getPercentage (reference_value, current_value):
 
 	"""
 	Get a value as reference (lastvalue) and compares it with the current value to return a percentage
@@ -12,7 +12,7 @@ def getPercentage (last_value, current_value):
 	If the percentage is smaller than 100 it substract the diference and it returns a negative value
 	"""
 
-	percentage = (decimal.Decimal(current_value) * decimal.Decimal(100))/ decimal.Decimal(last_value)
+	percentage = (decimal.Decimal(current_value) * decimal.Decimal(100))/ decimal.Decimal(reference_value)
 
 	percentage = percentage - decimal.Decimal(100)
 
