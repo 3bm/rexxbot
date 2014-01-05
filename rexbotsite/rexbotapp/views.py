@@ -17,6 +17,7 @@ from common import all_currencies, all_pairs, max_digits, formatCurrency, fees, 
 import random
 import time
 import datetime
+import decimal
 
 import radical_ex_lib
 import logic
@@ -80,6 +81,7 @@ def home(request):
 
 	for dat in datos:
 	#	time_list.append(dat.time)
+
 		value_list.append(int(dat.value*100))
 
 	#time_list = list(time_list)
@@ -230,35 +232,44 @@ def rules_simulation(request):
 	"""
 	Function to apply the rules over an existing crytocurrency values database
 
-	It needs a starting point (date and paid price)
+	It needs a starting point (date and paid price.value)
 	Then it has to go over the dates and read the value applying the rules
 	"""
 
-	# rateArray = Currency.objects.all().order_by('id')
-	rateArray = MainTickerValue.objects.all().order_by('id')
+	rateArray = Currency.objects.all().order_by('id')
+	# rateArray = MainTickerValue.objects.all().order_by('id')
+	# dollarArray = Currency.objects.all().order_by('id')
+	# nb_element = 200
+	# rateArray = [random.uniform(0.0, 0.2) for i in range(nb_element)]
+	print rateArray
 
-	bought_price = 0.03131
+	bought_price = 0.00505000
+	moneda = " BTC "
+	
 
 	reference_price = bought_price
 	html = "=============== <br>"
-	html = html + "Precio de salida (comprado a): " + str(reference_price) + "<br>"
+	html = html + "Precio de salida (comprado a): " + str(reference_price) + moneda +"<br>"
 
 	bought = True
 	sold = False
+	profit = -0.00505000
 
 	max_value = reference_price
 	min_value = reference_price
 
-	for price in rateArray:
+
+
+	for val, price in enumerate(rateArray):
 
 		# SI HA COMPRADO COMPRUEBA QUE TIENE QUE VENDER SI EL VALOR MAXIMO BAJA UN 3%
 		# ===========================================================================
 		if bought:
 			html = html + "Miramos si hay que vender <br>"
-			html = html + "Precio de referencia: " + str(reference_price) + "<br>"
+			html = html + "Precio de referencia: " + str(reference_price) + moneda + "<br>"
 			# Obtenemos el porcentaje del precio actual con el de compra (referencia)
-			html = html + "Valor maximo: " + str(max_value) + "<br>"
-			html = html + "Precio actual: " + str(price.value) + "<br>"
+			html = html + "Valor maximo: " + str(max_value) + moneda + "<br>"
+			html = html + "Precio actual: " + str(price.value) +  moneda +"<br>"
 			percentage = logic.getPercentage(reference_price, price.value)
 			html = html + "Porcentaje (valor maximo, precio actual): " + str(percentage) + "<br><br>"
 
@@ -270,14 +281,21 @@ def rules_simulation(request):
 				vender = logic.checkToSell(sold, sell)
 				# si vender es true hay que colocar la orden de venta
 				if vender:
-					html = html + "<span style='color:#FF0000'>Vendido a: " + str(vender) + "--->" + str(price.value) + "</span><br>"
-					# indicamos que hemos vendido
-					sold = True
-					bought = False
-					# actualizamos el precio de referencia al de venta
-					reference_price = price.value
-					
-					min_value = price.value
+					check_profit = decimal.Decimal(profit) + price.value
+
+					if check_profit > 0:
+						html = html + "<span style='color:#FF0000'>Vendido a: " + str(vender) + "--->" + str(price.value) + "</span><br>"
+						# indicamos que hemos vendido
+						sold = True
+						bought = False
+						# actualizamos el precio de referencia al de venta
+						reference_price = price.value
+						# Calculamos el profit:
+						profit = decimal.Decimal(profit) + reference_price 
+						# current_dollars = dollarArray[val].rate * profit
+						html = html + "<span style='color:#0000FF'>Profit: " + str(profit) +  " Por " +  moneda + " vendido </span><br>"
+						# html = html + "<span style='color:#C2C2C2'>Dollars: " + str(current_dollars) + " Por " +  moneda + " vendido </span><br>"
+						min_value = price.value
 			# si el porcentage es positivo actualizamos el precio de referencia (ya que es mayor al actual)
 			else:
 
@@ -302,12 +320,23 @@ def rules_simulation(request):
 				comprar = logic.checkToBuy(bought, buy)
 				# si comprar es true hay que colocar la orden de compra
 				if comprar:
-					html = html + "<span style='color:#00FF00'>Comprado a: " + str(comprar) + "--->" + str(price.value) + "<br><br>"
-					# indicamos que hemos comprado
-					bought = True
-					sold = False
-					# actualizamos el precio de referencia al de venta
-					reference_price = price.value
+
+					check_profit = decimal.Decimal(profit) - price.value
+
+					if check_profit > 0:
+						html = html + "<span style='color:#00FF00'>Comprado a: " + str(comprar) + "--->" + str(price.value) + moneda +"</span><br><br>"
+						# indicamos que hemos comprado
+						bought = True
+						sold = False
+
+						# actualizamos el precio de referencia al de venta
+						reference_price = price.value
+
+						# Calculamos el profit:
+						profit = decimal.Decimal(profit) - reference_price
+						html = html + "<span style='color:#0000FF'>Profit: " + str(profit) +  moneda +"</span><br>"
+
+						max_value = price.value
 			# si el porcentage es negativo actualizamos el precio de referencia (ya que es menor al actual)
 			else:
 
@@ -317,6 +346,7 @@ def rules_simulation(request):
 				reference_price = min_value
 				max_value = price.value
 
+		html = html + "<span style='color:#0000FF'>Profit: " + str(profit) + moneda + "</span><br><br>"
 
 	pair = "ltc_btc"
 

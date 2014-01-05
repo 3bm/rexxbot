@@ -38,7 +38,7 @@ class Currency(models.Model):
 	symbol = models.CharField(max_length=4)
 	amount = models.DecimalField(max_digits=20, decimal_places=8, default=0.00000000)
 	paid = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
-	rate = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+	rate = models.DecimalField(max_digits=20, decimal_places=8, default=0.00000000)
 	value = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
 
 	profit = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
