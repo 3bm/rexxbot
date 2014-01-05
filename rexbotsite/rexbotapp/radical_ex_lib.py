@@ -71,6 +71,23 @@ def getHistory(pair, connection=None, error_handler=None):
 
     
 
+def getTickerBTC_E_EUR(error_handler=None, connection=None):
+
+    if connection is None:
+        connection = common.BTC_EConnection()
+
+
+    depth = common.validateResponse(connection.makeJSONRequest('/api/2/btc_eur/ticker', method='GET'),
+                                    error_handler=error_handler)
+
+    if error_handler is not None:
+        print error_handler
+
+    #BTCEUR = depth.get(u'ticker')
+
+    BTCEUR = depth.get(u'last')
+
+    return BTCEUR
 
 
 def getTickerfastUSD(error_handler=None, connection=None):

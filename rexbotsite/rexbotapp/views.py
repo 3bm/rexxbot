@@ -58,6 +58,7 @@ def home(request):
 
 	USD_ticker = radical_ex_lib.getTickerfastUSD()
 	EUR_ticker = radical_ex_lib.getTickerfastEUR()
+	#EUR_ticker = radical_ex_lib.getTickerBTC_E_EUR()
 
 
 

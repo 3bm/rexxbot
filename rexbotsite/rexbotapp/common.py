@@ -10,7 +10,7 @@ exps = [decimal.Decimal("1e-%d" % i) for i in range(16)]
 
 domain = 'bter.com'
 domain_MTGOX = 'data.mtgox.com'
-
+domain_BTC_E = 'btc-e.com'
 all_pairs = ['btc_cny',
              'ltc_cny',
              'ftc_cny',
@@ -215,7 +215,28 @@ class MTGOXConnection:
     def makeJSONRequest(self, url, method='POST', extra_headers=None, params=""):
         response = self.makeRequest(url, method, extra_headers, params)
         return parseJSONResponse(response)
+
+class BTC_EConnection:
+    def __init__(self, timeout=30):
+        self.conn = httplib.HTTPSConnection(domain_BTC_E, timeout=timeout)
+        
+    def close(self):
+        self.conn.close()
+        
+    def makeRequest(self, url, method='POST', extra_headers=None, params=''):
+        headers = {"Content-type": "application/x-www-form-urlencoded"}
+        if extra_headers is not None:
+            headers.update(extra_headers)
+            
+        self.conn.request(method, url, params, headers)
+        response = self.conn.getresponse().read()
     
+        return response
+                                
+    def makeJSONRequest(self, url, method='POST', extra_headers=None, params=""):
+        response = self.makeRequest(url, method, extra_headers, params)
+        return parseJSONResponse(response)
+
         
 def validatePair(pair):
     if pair not in all_pairs:
@@ -254,7 +275,7 @@ def validateResponse(result, error_handler=None):
     #TODO: Proper error handling with Exception sublcass
     if type(result) is not dict:
         raise Exception('The response is not a dict.')
-
+        
     if result[u'result'] == u'false' or not result[u'result']:
         if error_handler is None:
             raise Exception(errorMessage(result))

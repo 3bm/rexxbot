@@ -390,6 +390,21 @@
     <script src="{{ STATIC_URL }}dashboard_engine/js/morris/chart-data-morris.js"></script>
     <script src="{{ STATIC_URL }}dashboard_engine/js/tablesorter/jquery.tablesorter.js"></script>
     <script src="{{ STATIC_URL }}dashboard_engine/js/tablesorter/tables.js"></script>
+    <script>
+     var time = new Date().getTime();
+     $(document.body).bind("mousemove keypress", function(e) {
+         time = new Date().getTime();
+     });
 
+     //60000 microseconds (1 minute)
+     function refresh() {
+         if(new Date().getTime() - time >= 60000) 
+             window.location.reload(true);
+         else 
+             setTimeout(refresh, 10000);
+     }
+
+     setTimeout(refresh, 10000);
+    </script>
   </body>
 </html>
