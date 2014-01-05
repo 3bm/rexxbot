@@ -53,3 +53,11 @@ class MainTickerValue(models.Model):
 	time = models.DateTimeField()
 	value = models.DecimalField(max_digits=25, decimal_places=5, default=0.00000) #Exchange in BTC
 
+
+class MaxMinValue(models.Model):
+
+	maximum_usd = models.DecimalField(max_digits=25, decimal_places=5, default=0.00000)
+	minimum_usd = models.DecimalField(max_digits=25, decimal_places=5, default=0.00000)
+	maximum_eur = models.DecimalField(max_digits=25, decimal_places=5, default=0.00000)
+	minimum_eur = models.DecimalField(max_digits=25, decimal_places=5, default=0.00000)
+	time = models.DateTimeField()

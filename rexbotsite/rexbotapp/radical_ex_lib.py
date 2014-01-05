@@ -8,7 +8,7 @@ import datetime
 
 import sys
 
-from rexbotapp.models import MainTickerValue
+from rexbotapp.models import MainTickerValue, MaxMinValue
 
 
 def getTicker(pair, connection=None, error_handler=None):
@@ -147,3 +147,95 @@ def saveCurrencies():
         papor = MainTickerValue.objects.create(currency=pair[0],time=datetime.datetime.utcnow(),value=ticker)
         papor.save()
 
+
+    ### We save also USD and EUR...
+    ticker_eur = getTickerfastEUR()
+    ticker_eur = ticker_eur.get(u'value')
+    papor = MainTickerValue.objects.create(currency='EUR',time=datetime.datetime.utcnow(),value=ticker_eur)
+    papor.save()
+
+    ticker_usd = getTickerfastUSD()
+    ticker_usd = ticker_usd.get(u'value')
+    papor = MainTickerValue.objects.create(currency='USD',time=datetime.datetime.utcnow(),value=ticker_usd)    
+    papor.save()
+
+def updateTrends():
+
+    cambio = False
+
+    current_ticker_usd = getTickerfastUSD()
+    current_ticker_eur = getTickerfastEUR()
+
+    current_ticker_usd = current_ticker_usd.get(u'value')
+    current_ticker_eur = current_ticker_eur.get(u'value')
+    
+    latest = MaxMinValue.objects.all().reverse()[0]
+
+    if current_ticker_usd > latest.maximum_usd:
+
+        latest.maximum_usd = current_ticker_usd
+        cambio = True
+
+    if current_ticker_usd < latest.minimum_usd:
+
+        latest.minimum_usd = current_ticker_usd
+        cambio = True
+
+
+    if current_ticker_eur > latest.maximum_eur:
+
+        latest.maximum_eur = current_ticker_eur
+        cambio = True
+
+    if current_ticker_eur < latest.minimum_eur:
+
+        latest.minimum_eur = current_ticker_eur
+        cambio = True
+
+
+    if cambio:
+        latest.time = datetime.datetime.utcnow()
+        latest.save()
+
+
+def getTrends():
+
+    delta = datetime.timedelta(hours=1)
+    primero = datetime.datetime.utcnow() - delta
+
+    usdtrend = MainTickerValue.objects.filter(time__gt=primero, currency='USD')
+    
+    usdtrend_inicio = usdtrend[0].value
+
+    usdtrend_final = usdtrend[len(usdtrend)-1].value
+    
+    variazzione = usdtrend_final - usdtrend_inicio
+
+    percentual = variazzione * 100 / usdtrend_final
+
+    perc_hour = percentual
+
+    ### the same but for 24 hours
+
+    delta = datetime.timedelta(hours=24)
+    primero = datetime.datetime.utcnow() - delta
+
+    usdtrend = MainTickerValue.objects.filter(time__gt=primero, currency='USD')
+    
+    usdtrend_inicio = usdtrend[0].value
+
+    usdtrend_final = usdtrend[len(usdtrend)-1].value
+    
+    variazzione = usdtrend_final - usdtrend_inicio
+
+    percentual = variazzione * 100 / usdtrend_final
+
+    perc_day = percentual
+
+    re_list = []
+
+    re_list.append(perc_hour)
+    re_list.append(perc_day)
+    
+
+    return re_list

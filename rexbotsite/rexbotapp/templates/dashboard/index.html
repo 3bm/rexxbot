@@ -100,10 +100,23 @@
           <div class="col-lg-12">
             
             <ol class="breadcrumb">
-              <li class="active"><img src='{{ STATIC_URL }}main_engine/images/icons/person25.png' width='50'> REXbot 0.1</li>
+              <li class="active"><img src='{{ STATIC_URL }}main_engine/images/icons/person25.png' width='50'> <span class=''>REXbot 0.1</span></li>
 
             </ol>
             <h1><span class='ticker-numbers'>{{usdticker.display}}</span> - <i class="fa fa-btc fa-1x"></i> from MtGOX (Japan)</h1>
+              {% if trend_hour > 0 %}
+                <span class='label label-success'><i class='fa fa-arrow-up fa-1x'></i> {{ trend_hour|floatformat:3  }} % last hour</span>
+              {% else %}
+                <span class='label label-danger'><i class='fa fa-arrow-down fa-1x'></i> {{ trend_hour|floatformat:3  }} % last hour</span>
+              {% endif%}
+
+              {% if trend_day > 0 %}
+                <span class='label label-success'><i class='fa fa-arrow-up fa-1x'></i> {{ trend_day|floatformat:3  }} % last 24 hours</span>
+              {% else %}
+                <span class='label label-danger'><i class='fa fa-arrow-down fa-1x'></i> {{ trend_day|floatformat:3  }} % last 24 hours</span>
+              {% endif%}
+
+
             <h1><small><span class='ticker-numbers'>{{eurticker.display}}</span> - <i class="fa fa-btc fa-1x"></i> from MtGOX (Japan)</small></h1>
             <!-- <div class="alert alert-success alert-dismissable">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>

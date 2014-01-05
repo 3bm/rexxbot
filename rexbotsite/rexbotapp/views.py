@@ -45,6 +45,14 @@ def home(request):
 
 	radical_ex_lib.saveCurrencies()
 
+	radical_ex_lib.updateTrends()
+
+	trends = []
+	trends = radical_ex_lib.getTrends()
+
+
+	#################################
+
 
 	pair_2 = "ppc_btc"
 	ticker_2 = radical_ex_lib.getTicker(pair_2) 
@@ -134,6 +142,9 @@ def home(request):
 		   'pair4' : pair_4,
 		   'usdticker' : USD_ticker,
 		   'eurticker' : EUR_ticker,
+		   'trend_hour': trends[0],
+		   'trend_day' : trends[1],
+
 		   'charttype': charttype,
 	        'chartdata': chartdata,
 	        'chartcontainer': chartcontainer,
