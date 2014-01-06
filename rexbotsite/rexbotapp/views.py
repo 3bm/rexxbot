@@ -28,7 +28,7 @@ def home(request):
 
 	pair = "ltc_btc"
 
-	asks, bids = getDepth(pair)
+	#asks, bids = getDepth(pair)
 
 	#print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 	#print len(asks), len(bids)
@@ -82,20 +82,20 @@ def home(request):
 	ydata = [i + random.randint(1, 2) for i in range(nb_element)]
 
 
-	datos = MainTickerValue.objects.all();
+	#####datos = MainTickerValue.objects.all();
 
 	#time_list = []
-	value_list = []
+	#####value_list = []
 
-	for dat in datos:
+	#####for dat in datos:
 	#	time_list.append(dat.time)
 
-		value_list.append(int(dat.value*100))
+		#####value_list.append(int(dat.value*100))
 
 	#time_list = list(time_list)
 	#time_list_json = simplejson.dumps(time_list)
 	
-	print value_list
+	#print value_list
 
 	# value_data = simplejson.dumps(value_list)
 
@@ -107,31 +107,31 @@ def home(request):
 	# print "SEGUNDA VEZZZ"
 	# print value_data
 
-	ydata2 = map(lambda x: x * 2, ydata)
-	ydata3 = map(lambda x: x * 2, ydata)
-	ydata4 = map(lambda x: x * 2, ydata)
+	# ydata2 = map(lambda x: x * 2, ydata)
+	# ydata3 = map(lambda x: x * 2, ydata)
+	# ydata4 = map(lambda x: x * 2, ydata)
 
-	print ydata2
-	print "POLLA GIORDAAAAAAAAAAAAAAAAAAA"
-	print ydata3
+	# print ydata2
+	# print "POLLA GIORDAAAAAAAAAAAAAAAAAAA"
+	# print ydata3
 
-	tooltip_date = "%d %b %Y %H:%M:%S %p"
-	extra_serie = {"tooltip": {"y_start": "There are ", "y_end": " calls"},
-	           "date_format": tooltip_date}
+	# tooltip_date = "%d %b %Y %H:%M:%S %p"
+	# extra_serie = {"tooltip": {"y_start": "There are ", "y_end": " calls"},
+	#            "date_format": tooltip_date}
 
-	chartdata = {
-	'x': xdata,
-	'name1': 'series 1', 'y1': ydata, 'extra1': extra_serie,
-	'name2': 'series 2', 'y2': ydata2, 'extra2': extra_serie,
-	'name3': 'series 3', 'y3': ydata3, 'extra3': extra_serie,
-	'name4': 'series 4', 'y4': ydata4, 'extra4': extra_serie
-	}
-	charttype = "lineChart"
-	chartcontainer = 'lineChart_container'  # container name
+	# chartdata = {
+	# 'x': xdata,
+	# 'name1': 'series 1', 'y1': ydata, 'extra1': extra_serie,
+	# 'name2': 'series 2', 'y2': ydata2, 'extra2': extra_serie,
+	# 'name3': 'series 3', 'y3': ydata3, 'extra3': extra_serie,
+	# 'name4': 'series 4', 'y4': ydata4, 'extra4': extra_serie
+	# }
+	# charttype = "lineChart"
+	# chartcontainer = 'lineChart_container'  # container name
 
 
-	context = {'asks': asks,
-		   'bids': bids,
+	context = {#'asks': asks,
+		   #'bids': bids,
 		   'ticker' : tickerman,
 		   'ticker2' : ticker_2,
 		   'ticker3' : ticker_3,
@@ -144,17 +144,22 @@ def home(request):
 		   'eurticker' : EUR_ticker,
 		   'trend_hour': trends[0],
 		   'trend_day' : trends[1],
+		   'one_hour_ago' : trends[2],
+		   'one_day_ago' : trends[3],
 		   'BTCE_EUR_ticker' : BTCE_EUR_ticker,
-		   'charttype': charttype,
-	        'chartdata': chartdata,
-	        'chartcontainer': chartcontainer,
-	        'extra': {
-	            'x_is_date': True,
-	            'x_axis_format': '%d %b %Y %H',
-	            'tag_script_js': True,
-	            'jquery_on_ready': True,
-	}
-			}
+}
+
+	# 	   'charttype': charttype,
+	#         'chartdata': chartdata,
+	#         'chartcontainer': chartcontainer,
+	#         'extra': {
+	#             'x_is_date': True,
+	#             'x_axis_format': '%d %b %Y %H',
+	#             'tag_script_js': True,
+	#             'jquery_on_ready': True,
+	# }
+
+	#		}
 
 	return render(request, 'dashboard/index.html', context)
 
