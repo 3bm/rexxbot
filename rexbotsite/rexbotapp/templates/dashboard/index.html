@@ -100,18 +100,19 @@
 
             </ol>
             <h1><span class='ticker-numbers'>{{usdticker.display}}</span> - <i class="fa fa-btc fa-1x"></i> from MtGOX (Japan)</h1>
+            <h3>
               {% if trend_hour > 0 %}
-                <span class='label label-success'><i class='fa fa-arrow-up fa-1x'></i> {{ trend_hour|floatformat:3  }} % last hour</span>
+                <span class='label label-success'><i class='fa fa-arrow-up fa-1x'></i> {{ trend_hour|floatformat:2  }} % last hour - from ${{one_hour_ago|floatformat:0}}</span>
               {% else %}
-                <span class='label label-danger'><i class='fa fa-arrow-down fa-1x'></i> {{ trend_hour|floatformat:3  }} % last hour</span>
+                <span class='label label-danger'><i class='fa fa-arrow-down fa-1x'></i> {{ trend_hour|floatformat:2  }} % last hour- from ${{one_hour_ago|floatformat:0}}</span>
               {% endif%}
 
               {% if trend_day > 0 %}
-                <span class='label label-success'><i class='fa fa-arrow-up fa-1x'></i> {{ trend_day|floatformat:3  }} % last 24 hours</span>
+                <span class='label label-success'><i class='fa fa-arrow-up fa-1x'></i> <span class='fa-1x'>{{ trend_day|floatformat:2  }} % last 24 hours - from ${{one_day_ago|floatformat:0}}</span>
               {% else %}
-                <span class='label label-danger'><i class='fa fa-arrow-down fa-1x'></i> {{ trend_day|floatformat:3  }} % last 24 hours</span>
+                <span class='label label-danger'><i class='fa fa-arrow-down fa-1x'></i> {{ trend_day|floatformat:2  }} % last 24 hours - from ${{one_day_ago|floatformat:0}}</span>
               {% endif%}
-
+            </h3>
 
             <h1><small><span class='ticker-numbers'>{{eurticker.display}}</span> - <i class="fa fa-btc fa-1x"></i> from MtGOX (Japan)</small></h1>
 

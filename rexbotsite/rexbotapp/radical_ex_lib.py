@@ -213,6 +213,7 @@ def getTrends():
 
     percentual = variazzione * 100 / usdtrend_final
 
+    one_hour_ago_value = usdtrend_inicio
     perc_hour = percentual
 
     ### the same but for 24 hours
@@ -230,12 +231,16 @@ def getTrends():
 
     percentual = variazzione * 100 / usdtrend_final
 
+    one_day_ago_value = usdtrend_inicio
     perc_day = percentual
 
     re_list = []
 
     re_list.append(perc_hour)
+    
     re_list.append(perc_day)
+    re_list.append(one_hour_ago_value)
+    re_list.append(one_day_ago_value)
     
 
     return re_list
