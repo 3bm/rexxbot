@@ -77,15 +77,15 @@ def getTickerBTC_E_EUR(error_handler=None, connection=None):
         connection = common.BTC_EConnection()
 
 
-    depth = common.validateResponse(connection.makeJSONRequest('/api/2/btc_eur/ticker', method='GET'),
+    depth = common.validateResponseBTCE(connection.makeJSONRequest('/api/2/btc_eur/ticker', method='GET'),
                                     error_handler=error_handler)
 
     if error_handler is not None:
         print error_handler
 
-    #BTCEUR = depth.get(u'ticker')
-
-    BTCEUR = depth.get(u'last')
+    BTCEUR = depth.get(u'ticker')
+    
+    BTCEUR = BTCEUR.get(u'last')
 
     return BTCEUR
 

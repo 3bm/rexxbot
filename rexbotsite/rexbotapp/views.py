@@ -67,7 +67,7 @@ def home(request):
 
 	USD_ticker = radical_ex_lib.getTickerfastUSD()
 	EUR_ticker = radical_ex_lib.getTickerfastEUR()
-	#EUR_ticker = radical_ex_lib.getTickerBTC_E_EUR()
+	BTCE_EUR_ticker = radical_ex_lib.getTickerBTC_E_EUR()
 
 
 
@@ -144,7 +144,7 @@ def home(request):
 		   'eurticker' : EUR_ticker,
 		   'trend_hour': trends[0],
 		   'trend_day' : trends[1],
-
+		   'BTCE_EUR_ticker' : BTCE_EUR_ticker,
 		   'charttype': charttype,
 	        'chartdata': chartdata,
 	        'chartcontainer': chartcontainer,

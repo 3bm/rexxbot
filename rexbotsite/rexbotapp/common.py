@@ -284,6 +284,19 @@ def validateResponse(result, error_handler=None):
 
     return result
 
+def validateResponseBTCE(result, error_handler=None):
+    #TODO: Proper error handling with Exception sublcass
+    if type(result) is not dict:
+        raise Exception('The response is not a dict.')
+        
+    if result[u'ticker'] == u'false' or not result[u'ticker']:
+        if error_handler is None:
+            raise Exception(errorMessage(result))
+        else:
+            result = error_handler(result)
+
+    return result
+
 
 def errorMessage(result):
     if u'message' in result.keys():
