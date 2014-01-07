@@ -252,15 +252,15 @@ def rules_simulation(request):
 	Then it has to go over the dates and read the value applying the rules
 	"""
 
-	rateArray = Currency.objects.all().order_by('id')
+	rateArray = MainTickerValue.objects.filter(currency='USD').order_by('id')
 	# rateArray = MainTickerValue.objects.all().order_by('id')
 	# dollarArray = Currency.objects.all().order_by('id')
 	# nb_element = 200
 	# rateArray = [random.uniform(0.0, 0.2) for i in range(nb_element)]
 	print rateArray
 
-	bought_price = 0.00505000
-	moneda = " BTC "
+	bought_price = 936.8
+	moneda = " USD "
 	
 
 	reference_price = bought_price

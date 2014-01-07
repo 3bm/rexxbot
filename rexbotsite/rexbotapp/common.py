@@ -11,6 +11,8 @@ exps = [decimal.Decimal("1e-%d" % i) for i in range(16)]
 domain = 'bter.com'
 domain_MTGOX = 'data.mtgox.com'
 domain_BTC_E = 'btc-e.com'
+domain_BITSTAMP = 'bitstamp.net'
+
 all_pairs = ['btc_cny',
              'ltc_cny',
              'ftc_cny',
