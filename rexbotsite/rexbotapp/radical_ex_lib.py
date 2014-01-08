@@ -334,7 +334,7 @@ def mainticker_chart():
                'xAxis': {
                     'title': {
                        'text': 'Time'}}},
-                       x_sortf_mapf_mts=(None, lambda i: datetime.datetime.fromtimestamp(i).strftime("%H:%M"), False))
+                       x_sortf_mapf_mts=(None, lambda i: datetime.datetime.fromtimestamp(i).strftime("%H:%M - %b,%d"), False))
 
     # return the chart object
     return cht
