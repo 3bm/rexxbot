@@ -130,7 +130,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'rexbotapp',
-    'django_nvd3',
+    'chartit',
 )
 
 # A sample logging configuration. The only tangible logging

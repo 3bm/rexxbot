@@ -8,7 +8,39 @@ import datetime
 
 import sys
 
+import simplejson
+
 from rexbotapp.models import MainTickerValue, MaxMinValue
+
+from chartit import DataPool, Chart
+
+
+
+import json
+
+from time import mktime
+
+class MyEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return int(mktime(obj.timetuple()))
+
+        return json.JSONEncoder.default(self, obj)
+
+
+# class TickerManager(models.Manager)
+    
+#     def get_queryset(self):
+#         query = self.get_queryset().filter(author='')
+
+#         for item in presource:
+        
+       
+#         item.time = json.dumps(item.time, cls = MyEncoder)
+#         postsource.append(item)
+
+
 
 
 def getTicker(pair, connection=None, error_handler=None):
@@ -244,3 +276,56 @@ def getTrends():
     
 
     return re_list
+
+
+########################
+
+
+
+def mainticker_chart():
+
+    delta = datetime.timedelta(hours=5)
+    primero = datetime.datetime.utcnow() - delta
+
+
+    presource = MainTickerValue.objects.filter(time__gt=primero, currency='USD')
+    
+    
+    #deltamin = datetime.timedelta(minutes=1)
+
+
+    
+    
+
+    #Step 1: Create a DataPool with the data we want to retrieve.
+    mainticker_data = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': presource},
+              'terms': [
+                'id',
+                'value']}
+             ])
+
+    #Step 2: Create the Chart object
+    cht = Chart(
+            datasource = mainticker_data,
+            series_options =
+              [{'options':{
+                  'type': 'line',
+                  'stacking': False},
+                'terms':{
+                  'id': [
+                    'value']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Mainticker'},
+               'xAxis': {
+                    'title': {
+                       'text': 'Time'}}})
+
+    # return the chart object
+    return cht
+

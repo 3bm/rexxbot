@@ -71,15 +71,27 @@ def home(request):
 
 
 
+	################################
+
+	chart = radical_ex_lib.mainticker_chart()
+	
+	#dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime)  or isinstance(obj, datetime.date) else None
+	#chart = simplejson.dump(chart, default=dthandler)
+
+
+	# print chart
+	# sys.exit()
+	#chart = simplejson.dumps(chart)
+
 	### Pintando la grafica (que no rula bien de momento)
-	nb_element = 100
-	start_time = int(time.mktime(datetime.datetime(2014, 1, 2).timetuple()) * 1000)
+	#nb_element = 100
+	#start_time = int(time.mktime(datetime.datetime(2014, 1, 2).timetuple()) * 1000)
 	
-	xdata = range(nb_element)
+	#xdata = range(nb_element)
 	
-	xdata = map(lambda x: start_time + x * 1000000000, xdata)
+	#xdata = map(lambda x: start_time + x * 1000000000, xdata)
 	
-	ydata = [i + random.randint(1, 2) for i in range(nb_element)]
+	#ydata = [i + random.randint(1, 2) for i in range(nb_element)]
 
 
 	#####datos = MainTickerValue.objects.all();
@@ -147,6 +159,8 @@ def home(request):
 		   'one_hour_ago' : trends[2],
 		   'one_day_ago' : trends[3],
 		   'BTCE_EUR_ticker' : BTCE_EUR_ticker,
+		   'maintickerchart': chart,
+
 }
 
 	# 	   'charttype': charttype,

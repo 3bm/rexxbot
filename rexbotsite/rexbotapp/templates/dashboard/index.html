@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 
-{% load nvd3_tags %}
 
 <html lang="en">
   <head>
@@ -20,6 +19,7 @@
     <!-- Page Specific CSS -->
     <link rel="stylesheet" href="{{ STATIC_URL }}dashboard_engine/css/morris.css">
 
+    <script src="{{ STATIC_URL }}dashboard_engine/js/jquery-1.10.2.js"></script>
 
   </head>
 
@@ -239,29 +239,25 @@
           <div class="col-lg-12">
             <div class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Traffic Statistics: October 1, 2013 - October 31, 2013</h3>
+                <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> BTC-USD Last 5 hours : </h3>
               </div>
               <div class="panel-body">
-                <div id="morris-chart-area"></div>
+                    {% load chartit %}
+                    {{ maintickerchart|load_charts:"container" }}
+                    
+                    <div id='container'>cuniado</div>
               </div>
             </div>
           </div>
-        </div><!-- /.row -->
+        </div> <!-- /.row -->
 
         <div class="row">
           <div class="col-lg-6">
             
 
+                    <!-- 
                     
-                    <div class="panel panel-primary">
-                      <div class="panel-body">
-                        {% include_container chartcontainer 500 700 %}
-                        <div class="text-right">
-                          <!-- <a href="#">View Details <i class="fa fa-arrow-circle-right"></i></a> -->
-                        </div>
-                      </div>
-                    </div>
-
+                    <div id='container'>cuniado</div> -->
 
           </div>
           <div class="col-lg-3">
@@ -393,15 +389,16 @@
     </div><!-- /#wrapper -->
 
     <!-- JavaScript -->
-    <script src="{{ STATIC_URL }}dashboard_engine/js/jquery-1.10.2.js"></script>
+    
     <script src="{{ STATIC_URL }}dashboard_engine/js/bootstrap.js"></script>
 
     <!-- Page Specific Plugins -->
     <script src="{{ STATIC_URL }}dashboard_engine/js/raphael-min.js"></script>
-    <script src="{{ STATIC_URL }}dashboard_engine/js/morris/morris-0.4.3.min.js"></script>
-    <script src="{{ STATIC_URL }}dashboard_engine/js/morris/chart-data-morris.js"></script>
+    <!--<script src="{{ STATIC_URL }}dashboard_engine/js/morris/morris-0.4.3.min.js"></script>
+    <script src="{{ STATIC_URL }}dashboard_engine/js/morris/chart-data-morris.js"></script>-->
     <script src="{{ STATIC_URL }}dashboard_engine/js/tablesorter/jquery.tablesorter.js"></script>
     <script src="{{ STATIC_URL }}dashboard_engine/js/tablesorter/tables.js"></script>
+    <script src="{{ STATIC_URL }}dashboard_engine/js/highcharts/highcharts.js"></script>
     <script>
      var time = new Date().getTime();
      $(document.body).bind("mousemove keypress", function(e) {
