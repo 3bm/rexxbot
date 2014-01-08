@@ -18,15 +18,15 @@ from chartit import DataPool, Chart
 
 import json
 
-from time import mktime
+import time
 
-class MyEncoder(json.JSONEncoder):
+# class MyEncoder(json.JSONEncoder):
 
-    def default(self, obj):
-        if isinstance(obj, datetime.datetime):
-            return int(mktime(obj.timetuple()))
+#     def default(self, obj):
+#         if isinstance(obj, datetime.datetime):
+#             return int(mktime(obj.timetuple()))
 
-        return json.JSONEncoder.default(self, obj)
+#         return json.JSONEncoder.default(self, obj)
 
 
 # class TickerManager(models.Manager)
@@ -284,16 +284,25 @@ def getTrends():
 
 def mainticker_chart():
 
-    delta = datetime.timedelta(hours=5)
+    delta = datetime.timedelta(hours=2)
     primero = datetime.datetime.utcnow() - delta
 
 
     presource = MainTickerValue.objects.filter(time__gt=primero, currency='USD')
     
-    
+    #MainTickerValue.objects.extra({'tiempo':"date(pub_date)"}).values('tiempo').annotate(count=Count('id'))
     #deltamin = datetime.timedelta(minutes=1)
 
+    # def date_handler(obj):
+    #     return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+    
+    # def date_handler(obj):
+    #     if hasattr(obj, 'isoformat'):
+    #         return obj.isoformat()
+    #     else:
+    #         raise TypeError("Unserializable object {} of type {}".format(obj,type(obj)))
 
+    #print json.dumps(data, default=date_handler)
     
     
 
@@ -304,7 +313,7 @@ def mainticker_chart():
             [{'options': {
                'source': presource},
               'terms': [
-                'id',
+                ('time', lambda d: time.mktime(d.timetuple())),
                 'value']}
              ])
 
@@ -316,7 +325,7 @@ def mainticker_chart():
                   'type': 'line',
                   'stacking': False},
                 'terms':{
-                  'id': [
+                  'time': [
                     'value']
                   }}],
             chart_options =
@@ -324,7 +333,8 @@ def mainticker_chart():
                    'text': 'Mainticker'},
                'xAxis': {
                     'title': {
-                       'text': 'Time'}}})
+                       'text': 'Time'}}},
+                       x_sortf_mapf_mts=(None, lambda i: datetime.datetime.fromtimestamp(i).strftime("%H:%M"), False))
 
     # return the chart object
     return cht
