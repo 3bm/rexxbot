@@ -143,6 +143,13 @@
                   <div class="row">
                     <div class="col-xs-6">
                       Litecoin
+
+                      {% if trend_hour > 0 %}
+                        <span class='label label-info'><i class='fa fa-arrow-up fa-1x'></i> {{ trend_LTC|floatformat:2  }} % last hour - from ${{one_hour_ago_LTC|floatformat:5}}</span>
+                      {% else %}
+                        <span class='label label-default'><i class='fa fa-arrow-down fa-1x'></i> {{ trend_LTC|floatformat:2  }} % last hour- from ${{one_hour_ago_LTC|floatformat:5}}</span>
+                      {% endif%}
+
                     </div>
                     <div class="col-xs-6 text-right">
                       <i class="fa fa-arrow-circle-right"></i>

@@ -50,6 +50,8 @@ def home(request):
 	trends = []
 	trends = radical_ex_lib.getTrends()
 
+	trendsLTC = []
+	trendsLTC = radical_ex_lib.getLTCTrends()
 
 	#################################
 
@@ -158,6 +160,8 @@ def home(request):
 		   'trend_day' : trends[1],
 		   'one_hour_ago' : trends[2],
 		   'one_day_ago' : trends[3],
+		   'trend_LTC' : trendsLTC[0],
+		   'one_hour_ago_LTC' : trendsLTC[1],
 		   'BTCE_EUR_ticker' : BTCE_EUR_ticker,
 		   'maintickerchart': chart,
 

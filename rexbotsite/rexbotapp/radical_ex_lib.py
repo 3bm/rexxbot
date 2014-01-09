@@ -278,6 +278,33 @@ def getTrends():
     return re_list
 
 
+
+def getLTCTrends():
+
+    delta = datetime.timedelta(hours=1)
+    primero = datetime.datetime.utcnow() - delta
+
+    usdtrend = MainTickerValue.objects.filter(time__gt=primero, currency='LTC')
+    
+    usdtrend_inicio = usdtrend[0].value
+
+    usdtrend_final = usdtrend[len(usdtrend)-1].value
+    
+    variazzione = usdtrend_final - usdtrend_inicio
+
+    percentual = variazzione * 100 / usdtrend_final
+
+    one_hour_ago_value = usdtrend_inicio
+    perc_hour = percentual
+
+    re_list = []
+
+    re_list.append(perc_hour)
+    re_list.append(one_hour_ago_value)
+   
+    return re_list
+
+
 ########################
 
 
@@ -334,7 +361,7 @@ def mainticker_chart():
                'xAxis': {
                     'title': {
                        'text': 'Time'}}},
-                       x_sortf_mapf_mts=(None, lambda i: datetime.datetime.fromtimestamp(i).strftime("%H:%M - %b,%d"), False))
+                       x_sortf_mapf_mts=(None, lambda i: datetime.datetime.fromtimestamp(i).strftime("%H:%M"), False))
 
     # return the chart object
     return cht
