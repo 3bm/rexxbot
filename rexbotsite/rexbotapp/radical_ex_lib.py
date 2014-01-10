@@ -122,6 +122,25 @@ def getTickerBTC_E_EUR(error_handler=None, connection=None):
     return BTCEUR
 
 
+def getTickerBTC_E_USD(error_handler=None, connection=None):
+
+    if connection is None:
+        connection = common.BTC_EConnection()
+
+
+    depth = common.validateResponseBTCE(connection.makeJSONRequest('/api/2/btc_usd/ticker', method='GET'),
+                                    error_handler=error_handler)
+
+    if error_handler is not None:
+        print error_handler
+
+    BTCUSD = depth.get(u'ticker')
+    
+    BTCUSD = BTCEUR.get(u'last')
+
+    return BTCUSD
+
+
 def getTickerfastUSD(error_handler=None, connection=None):
 	
 	if connection is None:
@@ -181,8 +200,8 @@ def saveCurrencies():
 
 
     ### We save also USD and EUR...
-    ticker_eur = getTickerfastEUR()
-    ticker_eur = ticker_eur.get(u'value')
+    ticker_eur = getTickerBTC_E_EUR()
+    #ticker_eur = ticker_eur.get(u'value')
     papor = MainTickerValue.objects.create(currency='EUR',time=datetime.datetime.utcnow(),value=ticker_eur)
     papor.save()
 
@@ -277,7 +296,52 @@ def getTrends():
 
     return re_list
 
+def getEURTrends():
+    
+    delta = datetime.timedelta(hours=1)
+    primero = datetime.datetime.utcnow() - delta
 
+    usdtrend = MainTickerValue.objects.filter(time__gt=primero, currency='EUR')
+    
+    usdtrend_inicio = usdtrend[0].value
+
+    usdtrend_final = usdtrend[len(usdtrend)-1].value
+    
+    variazzione = usdtrend_final - usdtrend_inicio
+
+    percentual = variazzione * 100 / usdtrend_final
+
+    one_hour_ago_value = usdtrend_inicio
+    perc_hour = percentual
+
+    ### the same but for 24 hours
+
+    delta = datetime.timedelta(hours=24)
+    primero = datetime.datetime.utcnow() - delta
+
+    usdtrend = MainTickerValue.objects.filter(time__gt=primero, currency='EUR')
+    
+    usdtrend_inicio = usdtrend[0].value
+
+    usdtrend_final = usdtrend[len(usdtrend)-1].value
+    
+    variazzione = usdtrend_final - usdtrend_inicio
+
+    percentual = variazzione * 100 / usdtrend_final
+
+    one_day_ago_value = usdtrend_inicio
+    perc_day = percentual
+
+    re_list = []
+
+    re_list.append(perc_hour)
+    
+    re_list.append(perc_day)
+    re_list.append(one_hour_ago_value)
+    re_list.append(one_day_ago_value)
+    
+
+    return re_list
 
 def getLTCTrends():
 
