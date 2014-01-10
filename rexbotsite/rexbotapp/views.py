@@ -195,6 +195,12 @@ def charts(request):
 
 	return render(request, 'dashboard/charts.html', context)
 
+def tables(request):
+
+	context = {}
+
+	return render(request, 'dashboard/tables.html', context)
+
 
 def piechart(request):
     xdata = ["Apple", "Apricot", "Avocado", "Banana", "Boysenberries", "Blueberries", "Dates", "Grapefruit", "Kiwi", "Lemon"]

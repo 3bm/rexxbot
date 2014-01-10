@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
     url(r'^$', 'rexbotapp.views.home', name='home'),
     url(r'^charts/', 'rexbotapp.views.charts', name='charts'),
+    url(r'^tables/', 'rexbotapp.views.tables', name='tables'),
+    
     url(r'^piechart/', 'rexbotapp.views.piechart', name='piechart'),
     url(r'^linechart/', 'rexbotapp.views.linechart', name='linechart'),
     url(r'^simulation/', 'rexbotapp.views.rules_simulation', name='simulation'),
