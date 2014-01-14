@@ -1,0 +1,75 @@
+###
+SIMPLE
+NO BULLSHIT 
+IDIOT PROOF
+ERROR PROOF
+
+
+TRIPLE YOUR LITECOIN IN 60 DAYS
+
+
+Run this on 1h Candles LTC/USD
+
+
+with love,
+
+litepresence 
+btc-e trollbox
+
+
+presence ronpaulforums.com
+@oraclepresence twitter
+
+
+
+###
+
+
+
+
+###
+LTC Tips:
+LhqNNDa76NcEf7EWQVmDTeoy3MiENhpAJv
+
+When you triple your LTC come back and share the love.
+###        
+
+
+
+
+
+init: (context)->
+    context.buy_treshold = 0.100221
+    context.sell_treshold = 0.559121
+#litepresence pre optimized, don't fuck with it
+
+
+
+
+handle: (context, data)->
+
+    instrument = data.instruments[0]
+    short = instrument.ema(5)# calculate 5 hour EMA
+    long = instrument.ema(11)# calculate 11 hour EMA       
+#because 5h and 11h cross on 1h sticks is where its at
+
+
+#draw pretty picture above   
+    plot
+        short: short
+        long: long
+    diff = 100 * (short - long) / ((short + long) / 2)
+    
+
+#BUY LOW, SELL HIGH    
+    if diff > context.buy_treshold          
+        buy instrument 
+        # LTC to da MOON!!!
+        
+    else
+        
+        if diff < -context.sell_treshold
+            sell instrument 
+            # DUMP that shit on a bag holder
+            # Fiat or Cry!
+   
