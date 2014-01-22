@@ -1,0 +1,25 @@
+##
+ 
+  
+init: (context)->
+  
+#
+# Thanasis best BTC-E bot
+#
+# Full name: Thanasis Efthymiou
+#
+handle: (context, data)->
+    instrument = data.instruments[0]
+    results = talib.AROON
+        high: instrument.high
+        low: instrument.low
+        startIdx: 0
+        endIdx: instrument.close.length-1
+        optInTimePeriod:22
+    aroon_up = _.last(results.outAroonUp)
+    aroon_down = _.last(results.outAroonDown)
+    if aroon_up - aroon_down > 0 
+       buy instrument
+    else if aroon_up - aroon_down < 0 
+       sell instrument
+ 
