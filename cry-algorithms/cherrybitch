@@ -1,6 +1,9 @@
 ###
-CHERRYBITCH Slope Bot  v3.01
-"Rides Green Dildos, Never Bleeds"
+- Modified by wild0wnes for cleaner debugging readout
+- enjoy 
+
+
+CHERRYB*TCH Slope Bot  v3.0.w
 
 *easy adjustability*
 *tune for any pair, candle size, or market*
@@ -39,7 +42,7 @@ class Functions
 init: (context) ->
 #DON'T MESS w/ this part
 #@ema_previous Module by Ken
-
+    context.invested = null
 
 
 
@@ -48,27 +51,26 @@ init: (context) ->
 # USER CONTROL PANEL
     
     # Buying Slope
-    context.BUY_min  = 0.01    #Start buying over this slope   
-    #context.BUY_max  = 0.5    #Stop buying at this slope
-    # Selling Slope
-    context.SELL_max = -0.05   #Start selling under this slope
-    #context.SELL_min = -0.6   #Stop selling at this slope
-    # Bull / Bear Sensitivity
-    context.LONG        = 250   #Long EMA value (MAX = 250)   
-    context.sensitivity = 0.5   #0 value = no sense /  1 = 50/50 w/ primary
-    # Primary EMA
+    context.BUY_min  = -0.3   #-0.3 #Start buying at this slope   
+    context.BUY_max  = 0.1    #0.1  #Stop buying at this slope
+    
+    #Selling Slope
+    context.SELL_max = -0.3   #-0.3 #Start selling at this slope
+    context.SELL_min = -0.6   #-0.6 #Stop selling at this slope
+    
+    
+    context.EMA_L   = 10     #Order Limit EMA; EMA(2) for 2h
     context.EMA     = 40     #Slope EMA; EMA(5) for 2h
+    
     # % above and below Limit EMA to buy and sell
-    #context.B_limit = 1      #1.002 for more consistant orders
-    #context.S_limit = 1      #0.998 for more consistant orders
-    #context.EMA_L   = 4      #Order Limit EMA; EMA(2) for 2h
+    context.B_limit = 1      #1.002 for more consistant orders
+    context.S_limit = 1      #0.998 for more consistant orders
+ 
     # Minimum balance and buy/sell quantities
     # may use "null" for any of these
-    # context.bal_min = 2  # if balance < this; sell all market order
-    # context.B = 0.5      # buy this many units per candle  
-    # context.S = 1        # sell this many units per candle
-    # number of seconds order stays on books
-    # context.timeout = 7199      
+    context.bal_min = 2  # if balance < this; sell all market order
+    context.B = 0.5      # buy this many units per candle  
+    context.S = 1        # sell this many units per candle
     
 # /USER CONTROL PANEL
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -129,30 +131,30 @@ cryptocat chatroom: "cryptotrader" litepresence
 handle: (context, data)->
     instrument = data.instruments[0]
     EMA_LAST = Functions.ema_previous(instrument.close,context.EMA)    
-    EMA = 1*instrument.ema(context.EMA)
-    #LIMIT = 1*instrument.ema(context.EMA_L)
-    LONG_LAST = Functions.ema_previous(instrument.close,context.LONG) 
-    LONG = 1*instrument.ema(context.LONG)
-    SLOPE_L = LONG - LONG_LAST
-    #balance = portfolio.positions[instrument.asset()].amount
-    MARKET = SLOPE_L * context.sensitivity
-    SLOPE = (EMA - EMA_LAST + MARKET) / (1 + context.sensitivity)
-# DRAW
+    EMA = instrument.ema(context.EMA)
+    LIMIT = instrument.ema(context.EMA_L)
+    SLOPE = EMA - EMA_LAST
+    balance = portfolio.positions[instrument.asset()].amount
+    Cbalance = portfolio.positions[instrument.curr()].amount
+ # DRAW
     plot 
         EMA: EMA
-        #LIMIT: LIMIT
-        LONG: LONG
+        LIMIT: LIMIT
 # LOG        
-    debug 'slope: ' + (Math.round(SLOPE*1000)/1000) + '  long: ' + (Math.round(SLOPE_L*1000)/1000)  
+        
 # LOGIC
-    if SLOPE > context.BUY_min #and SLOPE < context.BUY_max
-        buy instrument #(instrument,context.B,(Math.round(context.B_limit*LIMIT*1000))/1000,context.timeout)
-    if SLOPE < context.SELL_max #and SLOPE > context.SELL_min
-        sell instrument #(instrument,context.S,(Math.round(context.S_limit*LIMIT*1000))/1000,context.timeout)
-    #if SLOPE < context.SELL_max and SLOPE > context.SELL_min and balance < context.bal_min      
-     #   sell instrument
-        
-        
+    
+    
+    if SLOPE > context.BUY_min and SLOPE < context.BUY_max
+        if buy(instrument,context.B,(Math.round(context.B_limit*LIMIT*1000))/1000,179)
+         debug 'Assets: ' + (Math.floor(balance*1000)/1000) + ' | ' + 'Currency: ' + (Math.floor(Cbalance*1000)/1000)+' |' + ' Buy slope: ' + (Math.round(SLOPE*1000)/1000)
+    if SLOPE < context.SELL_max and SLOPE > context.SELL_min
+        if sell(instrument,context.S,(Math.round(context.S_limit*LIMIT*1000))/1000,179)
+         debug 'Assets: ' + (Math.floor(balance*1000)/1000) + ' | ' + 'Currency: ' + (Math.floor(Cbalance*1000)/1000)+' |' + ' Sell slopeB: ' + (Math.round(SLOPE*1000)/1000)
+     if SLOPE < context.SELL_max and SLOPE > context.SELL_min and balance < context.bal_min
+        if sell instrument
+         debug 'Assets: ' + (Math.floor(balance*1000)/1000) + ' | ' + 'Currency: ' + (Math.floor(Cbalance*1000)/1000)+' |' + ' Sell slopeA: ' + (Math.round(SLOPE*1000)/1000)
+
 # Without the user control panel referencing, spacing, and comments
 # this bot squeezes down to about 30 lines of code
 #
