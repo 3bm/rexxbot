@@ -88,10 +88,10 @@ handle: (context, data)->
     # debug 'HIGH: ' + instrument.high[instrument.high.length-1] # Displays current High value
     # debug 'LOW: ' + instrument.low[instrument.low.length-1] # Displays current High value
 
-    if (aroon_up - aroon_down > 0) or (LIMIT > EMA and average_price > EMA)
+    if (LIMIT > EMA and average_price > EMA)
        buy instrument
-       
-    else if (aroon_up - aroon_down < 0) or (average_price < EMA and bought == true)
+       context.bought = true
+    else if (average_price < EMA and bought == true)
        sell instrument
        context.bought = false
 
@@ -109,7 +109,7 @@ handle: (context, data)->
       #    debug 'Assets: ' + (Math.floor(balance*1000)/1000) + ' | ' + 'Currency: ' + (Math.floor(Cbalance*1000)/1000)+' |' + ' Sell : LIMIT:' + LIMIT + ' EMA: ' + EMA
 
 # 1-jan -> 27-jan
-# 7-20  : 5.5 -> 5.81
+# 7-20  : 5.5 -> 6.16
 # 6-20  : 5.5 -> 5.50
 # 5-20  : 5.5 -> 5.65
 # 4-20  : 5.5 -> 5.45
@@ -119,7 +119,7 @@ handle: (context, data)->
 # 6-19  : 5.5 -> 5.54
 # 6-10  : 5.5 -> 4.94
 # EMA with price
-# 7-20+price  : 5.5 -> 5.67
+# 7-20+price  : 5.5 -> 6.16
 
 # aroon - 5.87
 # aroon - 70-50 -> 5.58
